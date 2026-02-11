@@ -8,7 +8,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          "border-brand bg-brand text-white shadow-card hover:-translate-y-0.5 hover:bg-[#083f56] hover:shadow-lift",
+          "border-brand bg-brand text-white hover:-translate-y-0.5 hover:bg-[#083f56] hover:shadow-lift",
         ghost: "border-line bg-surface text-text hover:border-brand/40 hover:bg-panel"
       },
       size: {

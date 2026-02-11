@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     siteName: "Hamza Hamal Portfolio",
     images: [
       {
-        url: "/hamza.png",
+        url: "/hamza.webp",
         width: 1200,
         height: 900,
         alt: "Hamza Hamal portfolio preview",
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteTitle,
     description: siteDescription,
-    images: ["/hamza.png"],
+    images: ["/hamza.webp"],
   },
   robots: {
     index: true,
@@ -89,7 +89,7 @@ export default function RootLayout({
     name: "Hamza Hamal",
     jobTitle: "Software Engineer",
     url: siteUrl,
-    image: `${siteUrl}/hamza.png`,
+    image: `${siteUrl}/hamza.webp`,
     email: "mailto:hamalhamza@gmail.com",
     telephone: "+91-9419114719",
     address: {
