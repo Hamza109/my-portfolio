@@ -27,10 +27,11 @@ export default function HomePage() {
   const year = new Date().getFullYear();
 
   const navItems = [
-    { label: "About", href: "#about" },
+    { label: "Overview", href: "#overview" },
     { label: "Work", href: "#projects" },
     { label: "Stack", href: "#stack" },
     { label: "Journey", href: "#journey" },
+    { label: "About Me", href: "#about-me" },
     { label: "Contact", href: "#contact" },
   ];
 
@@ -83,6 +84,20 @@ export default function HomePage() {
     { name: "OpenAI API", icon: "https://cdn.simpleicons.org/openai/FFFFFF" },
   ];
 
+  const columns = 5;
+  const rows = Math.ceil(stackWithIcons.length / columns);
+  const floatingChipLayout = stackWithIcons.map((_, idx) => {
+    const col = idx % columns;
+    const row = Math.floor(idx / columns);
+    const left = 10 + col * (80 / (columns - 1));
+    const top = 14 + row * (72 / Math.max(rows - 1, 1));
+    const driftX = 24 + (idx % 4) * 10;
+    const driftY = 18 + (idx % 5) * 8;
+    const duration = 3.8 + (idx % 6) * 0.45;
+    const delay = (idx % 7) * 0.2;
+    return { left, top, driftX, driftY, duration, delay };
+  });
+
   return (
     <main className='relative min-h-screen overflow-x-hidden bg-gradient-to-b from-[#030712] via-[#020617] to-[#020617] text-white'>
       {/* Background accents */}
@@ -103,8 +118,15 @@ export default function HomePage() {
         <header className='container py-4 md:py-6'>
           <nav className='flex items-center justify-between rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-xs shadow-card backdrop-blur'>
             <div className='flex items-center gap-3'>
-              <div className='flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-tr from-brand/80 via-brand to-accent/80 text-xs font-semibold'>
-                HH
+              <div className='overflow-hidden  '>
+                <Image
+                  src='/hamza-logo.png'
+                  alt='Hamza profile logo'
+                  width={45}
+                  height={45}
+                  className='h-9 w-9 object-cover scale-125'
+                  priority
+                />
               </div>
               <div>
                 <p className='font-display text-[10px] uppercase tracking-[0.28em] text-slate-400'>
@@ -163,41 +185,42 @@ export default function HomePage() {
 
         {/* Full-screen snap sections */}
         <div className='relative flex-1'>
-          {/* Hero section */}
+          {/* Overview section */}
           <section
-            id='about'
-            className='container flex min-h-screen snap-start flex-col justify-center gap-10 pb-20 pt-10 md:pb-24 md:pt-4'
+            id='overview'
+            className='container flex min-h-screen snap-start flex-col justify-center gap-12 pb-20 pt-8 md:pb-24 md:pt-4'
           >
-            <div className='grid gap-10 md:grid-cols-[minmax(0,1.3fr),minmax(0,1fr)] md:items-center'>
+            <div className='grid gap-10 lg:grid-cols-12 lg:items-center'>
               <motion.div
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
+                className='lg:col-span-7'
               >
-                <div className='inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/40 px-3 py-1 text-[11px] text-slate-300'>
-                  <Sparkles className='h-3 w-3 text-amber-300' />
-                  <span className='font-medium tracking-[0.14em] uppercase'>
-                    Full-stack & React Native engineer
+                <div className='inline-flex items-center gap-2 rounded-full border border-sky-300/30 bg-sky-400/10 px-3 py-1 text-[11px] text-sky-100'>
+                  <span className='h-1.5 w-1.5 rounded-full bg-sky-300' />
+                  <span className='font-semibold tracking-[0.16em] uppercase'>
+                    Software Engineer
                   </span>
                 </div>
 
-                <h1 className='mt-5 font-display text-4xl leading-[1.05] text-white md:text-6xl'>
+                <h1 className='mt-5 max-w-4xl font-display text-4xl leading-[1.02] text-white md:text-6xl'>
                   I design, architect, and ship
-                  <span className='bg-gradient-to-r from-amber-200 via-amber-300 to-amber-400 bg-clip-text text-transparent'>
+                  <span className='bg-gradient-to-r from-sky-200 via-sky-300 to-emerald-300 bg-clip-text text-transparent'>
                     {" "}
                     production-ready products
                   </span>{" "}
                   for web & mobile.
                 </h1>
 
-                <p className='mt-5 max-w-2xl text-sm text-slate-300 md:text-base'>
+                <p className='mt-6 max-w-2xl text-sm text-slate-300 md:text-base'>
                   {data.tagline}
                 </p>
                 <p className='mt-3 max-w-2xl text-sm text-slate-400 md:text-[15px]'>
                   {data.intro}
                 </p>
 
-                <div className='mt-6 flex flex-wrap items-center gap-3 text-[11px] text-slate-300'>
+                <div className='mt-7 flex flex-wrap items-center gap-3 text-[11px] text-slate-300'>
                   <span className='inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5'>
                     <MapPin className='h-3 w-3' />
                     {data.location}
@@ -208,23 +231,7 @@ export default function HomePage() {
                   </span>
                 </div>
 
-                <div className='mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4'>
-                  {data.stats.map((stat) => (
-                    <Card
-                      key={stat.label}
-                      className='border-white/10 bg-white/5 p-3 text-left shadow-none backdrop-blur-sm'
-                    >
-                      <p className='text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400'>
-                        {stat.label}
-                      </p>
-                      <p className='mt-1 text-lg font-semibold text-white'>
-                        {stat.value}
-                      </p>
-                    </Card>
-                  ))}
-                </div>
-
-                <div className='mt-7 flex flex-wrap items-center gap-3'>
+                <div className='mt-8 flex flex-wrap items-center gap-3'>
                   <a href={`mailto:${data.contact.email}`}>
                     <Button className='rounded-full border-brand bg-brand px-5 text-[12px] font-semibold tracking-[0.16em] text-white hover:bg-sky-700'>
                       Contact for roles
@@ -239,66 +246,89 @@ export default function HomePage() {
                     Download full resume
                   </a>
                 </div>
+
+                <div className='mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4'>
+                  {data.stats.map((stat, idx) => (
+                    <motion.div
+                      key={stat.label}
+                      initial={{ opacity: 0, y: 12 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.35, delay: idx * 0.08 }}
+                    >
+                      <Card className='h-full border-white/10 bg-white/[0.04] p-3 text-left shadow-none backdrop-blur-sm'>
+                        <p className='text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400'>
+                          {stat.label}
+                        </p>
+                        <p className='mt-1 text-lg font-semibold text-white'>
+                          {stat.value}
+                        </p>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </div>
               </motion.div>
 
               <motion.div
                 initial={{ opacity: 0, scale: 0.96, y: 10 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-                className='flex flex-col gap-4'
+                className='relative lg:col-span-5'
               >
-                <Card className='relative overflow-hidden border-white/10 bg-white/5 p-5 text-left text-slate-100 shadow-none backdrop-blur'>
-                  <div className='absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(248,250,252,0.08)_0,_transparent_60%)]' />
-                  <div className='relative z-10'>
-                    <p className='text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-300'>
-                      What I&apos;m good at
-                    </p>
-                    <div className='mt-3 grid gap-3'>
-                      {capabilities.slice(0, 2).map((cap) => {
-                        const Icon = cap.icon;
-                        return (
-                          <div key={cap.title} className='flex gap-2'>
-                            <div className='mt-0.5 flex h-7 w-7 items-center justify-center rounded-lg bg-white/10'>
-                              <Icon className='h-3.5 w-3.5 text-amber-300' />
-                            </div>
-                            <div>
-                              <p className='text-xs font-semibold text-slate-50'>
-                                {cap.title}
-                              </p>
-                              <p className='mt-1 text-[11px] leading-relaxed text-slate-300'>
-                                {cap.text}
-                              </p>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </Card>
+                <motion.div
+                  className='relative mx-auto w-full max-w-[620px]'
+                  animate={{ y: [0, -8, 0] }}
+                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <div className='pointer-events-none absolute inset-x-8 top-16 -z-10 h-56 rounded-full bg-sky-400/20 blur-3xl' />
+                  <div className='pointer-events-none absolute inset-x-10 bottom-8 -z-10 h-44 rounded-full bg-emerald-300/15 blur-3xl' />
+                  <motion.figure
+                    className='relative mx-auto w-full'
+                    whileHover={{ scale: 1.01 }}
+                    transition={{ duration: 0.25 }}
+                  >
+                    <Image
+                      src='/hamza.png'
+                      alt='Hamza portrait'
+                      width={1200}
+                      height={900}
+                      className='h-auto w-full object-contain opacity-[0.98] drop-shadow-[0_25px_50px_rgba(8,47,73,0.42)] [mask-image:linear-gradient(to_bottom,black_80%,transparent_100%)]'
+                      priority
+                    />
+                    <div className='pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent via-[#020617]/40 to-[#020617]' />
+                  </motion.figure>
 
-                <Card className='border-white/10 bg-slate-950/40 p-4 text-left shadow-none backdrop-blur'>
-                  <p className='text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400'>
-                    Core stack (day to day)
-                  </p>
-                  <div className='mt-3 flex flex-wrap gap-1.5 text-[11px] text-slate-200'>
-                    <span className='rounded-full bg-white/5 px-3 py-1'>
-                      React & React Native
-                    </span>
-                    <span className='rounded-full bg-white/5 px-3 py-1'>
-                      Next.js
-                    </span>
-                    <span className='rounded-full bg-white/5 px-3 py-1'>
-                      TypeScript
-                    </span>
-                    <span className='rounded-full bg-white/5 px-3 py-1'>
-                      Prisma · MySQL
-                    </span>
-                    <span className='rounded-full bg-white/5 px-3 py-1'>
-                      REST · WebSockets
-                    </span>
-                  </div>
-                </Card>
+                </motion.div>
               </motion.div>
+            </div>
+
+            <div className='grid gap-3 sm:grid-cols-2 lg:grid-cols-4'>
+              {capabilities.map((cap, idx) => {
+                const Icon = cap.icon;
+                return (
+                  <motion.div
+                    key={cap.title}
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.35, delay: idx * 0.06 }}
+                  >
+                    <Card className='h-full border-white/10 bg-slate-900/35 p-4 text-left shadow-none backdrop-blur transition hover:border-sky-300/35 hover:bg-slate-900/55'>
+                      <div className='flex items-center gap-2'>
+                        <div className='flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/5'>
+                          <Icon className='h-4 w-4 text-sky-200' />
+                        </div>
+                        <p className='text-sm font-semibold text-slate-100'>
+                          {cap.title}
+                        </p>
+                      </div>
+                      <p className='mt-2 text-[12px] leading-relaxed text-slate-300'>
+                        {cap.text}
+                      </p>
+                    </Card>
+                  </motion.div>
+                );
+              })}
             </div>
           </section>
 
@@ -387,34 +417,102 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className='grid gap-3 sm:grid-cols-2 lg:grid-cols-4'>
-              {stackWithIcons.map((tech, idx) => (
-                <motion.div
-                  key={tech.name}
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.25, delay: idx * 0.02 }}
-                >
-                  <Card className='group border-white/10 bg-slate-950/40 p-3 shadow-none backdrop-blur transition hover:border-amber-300/35 hover:bg-slate-900/60'>
-                    <div className='flex items-center gap-3'>
-                      <div className='flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-black/30'>
+            <div className='relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950/70 via-slate-950/50 to-slate-900/35 p-5 md:p-6'>
+              <div className='pointer-events-none absolute -left-16 top-6 h-48 w-48 rounded-full bg-sky-400/15 blur-3xl' />
+              <div className='pointer-events-none absolute -right-16 bottom-0 h-56 w-56 rounded-full bg-cyan-300/10 blur-3xl' />
+              <div className='relative flex flex-wrap gap-3 md:hidden'>
+                {stackWithIcons.map((tech, idx) => (
+                  <motion.div
+                    key={tech.name}
+                    initial={{ opacity: 0, y: 12 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    animate={{ y: [0, -5, 0] }}
+                    transition={{
+                      opacity: { duration: 0.25, delay: idx * 0.02 },
+                      y: {
+                        duration: 3.2 + (idx % 5) * 0.35,
+                        delay: idx * 0.06,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      },
+                    }}
+                    whileHover={{ y: -8, scale: 1.03 }}
+                    className='group'
+                  >
+                    <div className='inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-slate-900/70 px-3 py-2 shadow-[0_10px_30px_rgba(2,132,199,0.12)] backdrop-blur transition group-hover:border-sky-300/35 group-hover:bg-slate-900'>
+                      <span className='flex h-7 w-7 items-center justify-center rounded-full bg-black/35'>
                         <Image
                           src={tech.icon}
                           alt={`${tech.name} icon`}
-                          width={16}
-                          height={16}
-                          className='h-4 w-4'
+                          width={15}
+                          height={15}
+                          className='h-[15px] w-[15px]'
                           unoptimized
                         />
-                      </div>
-                      <p className='text-[13px] font-semibold text-slate-100'>
+                      </span>
+                      <span className='text-[12px] font-semibold text-slate-100'>
                         {tech.name}
-                      </p>
+                      </span>
                     </div>
-                  </Card>
-                </motion.div>
-              ))}
+                  </motion.div>
+                ))}
+              </div>
+
+              <div className='relative hidden h-[430px] md:block'>
+                {stackWithIcons.map((tech, idx) => {
+                  const layout = floatingChipLayout[idx];
+                  return (
+                    <motion.div
+                      key={tech.name}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.25, delay: idx * 0.03 }}
+                      style={{ left: `${layout.left}%`, top: `${layout.top}%` }}
+                      className='group absolute'
+                    >
+                      <motion.div
+                        animate={{
+                          x: [-layout.driftX, layout.driftX],
+                          y: [-layout.driftY, layout.driftY],
+                        }}
+                        transition={{
+                          x: {
+                            duration: layout.duration,
+                            repeat: Infinity,
+                            repeatType: "mirror",
+                            ease: "easeInOut",
+                            delay: layout.delay,
+                          },
+                          y: {
+                            duration: layout.duration * 0.9,
+                            repeat: Infinity,
+                            repeatType: "mirror",
+                            ease: "easeInOut",
+                            delay: layout.delay * 0.7,
+                          },
+                        }}
+                        className='inline-flex -translate-x-1/2 -translate-y-1/2 items-center gap-2.5 rounded-full border border-white/10 bg-slate-900/80 px-3 py-2 shadow-[0_10px_30px_rgba(2,132,199,0.12)] backdrop-blur transition group-hover:border-sky-300/35 group-hover:bg-slate-900'
+                      >
+                        <span className='flex h-7 w-7 items-center justify-center rounded-full bg-black/35'>
+                          <Image
+                            src={tech.icon}
+                            alt={`${tech.name} icon`}
+                            width={15}
+                            height={15}
+                            className='h-[15px] w-[15px]'
+                            unoptimized
+                          />
+                        </span>
+                        <span className='text-[12px] font-semibold text-slate-100'>
+                          {tech.name}
+                        </span>
+                      </motion.div>
+                    </motion.div>
+                  );
+                })}
+              </div>
             </div>
           </section>
 
@@ -507,6 +605,92 @@ export default function HomePage() {
                 ))}
               </div>
             </div>
+          </section>
+
+          {/* About me section */}
+          <section
+            id='about-me'
+            className='container flex min-h-screen snap-start flex-col justify-center gap-8 pb-20 pt-16 md:pb-24'
+          >
+            <div className='flex flex-wrap items-end justify-between gap-4'>
+              <div>
+                <p className='text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan-300'>
+                  About me
+                </p>
+                <h2 className='mt-3 font-display text-3xl text-slate-50 md:text-4xl'>
+                  Engineering with ownership, discipline, and resilience.
+                </h2>
+              </div>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+              className='relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950/70 via-slate-950/45 to-slate-900/35 backdrop-blur'
+            >
+              <div className='pointer-events-none absolute -right-20 top-8 h-60 w-60 rounded-full bg-cyan-400/20 blur-3xl' />
+              <div className='pointer-events-none absolute -left-16 bottom-8 h-44 w-44 rounded-full bg-sky-500/10 blur-3xl' />
+              <div className='relative z-10 grid gap-6 lg:grid-cols-[minmax(0,1.2fr),minmax(0,0.8fr)] lg:items-start'>
+                <div className='space-y-4 text-sm leading-relaxed text-slate-300 md:text-[15px]'>
+                  <p className='inline-flex rounded-full bg-cyan-400/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-cyan-200'>
+                    About my approach
+                  </p>
+                  <p className='text-base leading-relaxed text-slate-100 md:text-[17px]'>
+                    I build production software with a balance of product
+                    thinking, engineering rigor, and execution speed.
+                  </p>
+                  <p>
+                    I&apos;m a passionate Web and Mobile Application Developer
+                    who thrives on building meaningful digital experiences. I
+                    enjoy transforming ideas into scalable, user-friendly
+                    applications that solve real-world problems.
+                  </p>
+                  <p>
+                    My journey in technology has been shaped by curiosity,
+                    persistence, and a strong belief in continuous growth.
+                    I&apos;ve worked on production-level web and mobile
+                    applications, focusing on clean architecture, performance
+                    optimization, and seamless user experiences. From
+                    implementing secure authentication systems to integrating
+                    complex APIs and payment gateways, I enjoy working across
+                    the full development lifecycle.
+                  </p>
+                  <p>
+                    What truly defines me is resilience. Whether debugging
+                    difficult production issues or resolving third-party library
+                    conflicts that block progress, I approach challenges with
+                    patience and determination. I believe every obstacle is an
+                    opportunity to improve technically and mentally.
+                  </p>
+                  <p>
+                    I value discipline, ownership, and high standards. My
+                    philosophy is simple:
+                  </p>
+                  <p className='rounded-xl bg-cyan-400/10 px-4 py-3 font-medium text-cyan-100'>
+                    We don&apos;t fail when we lose - we fail when we quit.
+                  </p>
+                  <p>
+                    I&apos;m constantly exploring new technologies, refining my
+                    craft, and pushing myself to build better, smarter, and
+                    more impactful solutions.
+                  </p>
+                </div>
+
+                <figure className='overflow-hidden rounded-[22px] lg:justify-self-end lg:w-full'>
+                  <video
+                    src='/hamza.mp4'
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload='metadata'
+                    className='h-full w-full object-cover rounded-[22px] bg-slate-900/70 shadow-[0_26px_75px_rgba(6,182,212,0.22)]'
+                  />
+                </figure>
+              </div>
+            </motion.div>
           </section>
 
           {/* Contact section */}
